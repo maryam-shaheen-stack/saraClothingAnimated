@@ -1,0 +1,85 @@
+<section class="page-header">
+  <h1>Contact Us</h1>
+  <p>Have a question about an order or a product? We would love to hear from you.</p>
+</section>
+
+<section class="contact-layout" data-reveal>
+
+  <div class="contact-info">
+    <h2 class="section__heading">Get in Touch</h2>
+
+    <div class="contact-info__item">
+      <img src="/icons/mail.svg" alt="" width="20" height="20">
+      <div>
+        <h3>Email</h3>
+        <a href="mailto:hello@saraclothing.pk">hello@saraclothing.pk</a>
+      </div>
+    </div>
+
+    <div class="contact-info__item">
+      <img src="/icons/whatsapp.svg" alt="" width="20" height="20">
+      <div>
+        <h3>WhatsApp</h3>
+        <a href="https://wa.me/923000000000" target="_blank" rel="noopener noreferrer">+92 300 0000000</a>
+      </div>
+    </div>
+
+    <div class="contact-info__item">
+      <img src="/icons/instagram.svg" alt="" width="20" height="20">
+      <div>
+        <h3>Instagram</h3>
+        <a href="https://www.instagram.com/saraclothing.pk" target="_blank" rel="noopener noreferrer">@saraclothing.pk</a>
+      </div>
+    </div>
+
+    <div class="contact-info__item">
+      <img src="/icons/clock.svg" alt="" width="20" height="20">
+      <div>
+        <h3>Response Time</h3>
+        <p>We typically reply within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form-wrapper">
+    <h2 class="section__heading">Send a Message</h2>
+
+    <form id="contactForm" novalidate>
+      <div class="form-group">
+        <label for="contactName">Full Name</label>
+        <input type="text" id="contactName" name="name" required aria-describedby="contactNameError">
+        <span class="form-error" id="contactNameError" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="contactEmail">Email Address</label>
+        <input type="email" id="contactEmail" name="email" required aria-describedby="contactEmailError">
+        <span class="form-error" id="contactEmailError" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="contactPhone">Phone Number (optional)</label>
+        <input type="tel" id="contactPhone" name="phone">
+      </div>
+
+      <div class="form-group">
+        <label for="contactSubject">Subject</label>
+        <input type="text" id="contactSubject" name="subject" required aria-describedby="contactSubjectError">
+        <span class="form-error" id="contactSubjectError" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="contactMessage">Message</label>
+        <textarea id="contactMessage" name="message" rows="5" required aria-describedby="contactMessageError"></textarea>
+        <span class="form-error" id="contactMessageError" role="alert"></span>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--large" id="contactSubmitBtn">
+        <span class="btn__label">Send Message</span>
+      </button>
+
+      <p class="form-feedback" id="contactFormFeedback" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+</section>

@@ -1,0 +1,81 @@
+<section class="page-header">
+  <h1>Checkout</h1>
+  <p>Complete your order below — Cash on Delivery.</p>
+</section>
+
+<section class="checkout-page">
+  <div class="checkout-grid">
+
+    <!-- Order Summary -->
+    <div class="checkout-summary">
+      <h2>Your Order</h2>
+      <div class="checkout-items">
+        <% lines.forEach(function(line) { %>
+          <div class="checkout-item">
+            <img src="<%= line.product.image %>" alt="<%= line.product.name %>" width="70" height="88" loading="lazy">
+            <div class="checkout-item__info">
+              <p class="checkout-item__name"><%= line.product.name %></p>
+              <% if (line.size) { %><p class="checkout-item__meta">Size: <%= line.size %></p><% } %>
+              <p class="checkout-item__meta">Qty: <%= line.quantity %></p>
+            </div>
+            <p class="checkout-item__price">Rs. <%= line.lineTotal.toLocaleString() %></p>
+          </div>
+        <% }); %>
+      </div>
+
+      <div class="checkout-total">
+        <span>Subtotal</span>
+        <span>Rs. <%= subtotal.toLocaleString() %></span>
+      </div>
+      <div class="checkout-total">
+        <span>Shipping</span>
+        <span class="checkout-total__note">Calculated on delivery</span>
+      </div>
+      <div class="checkout-total checkout-total--grand">
+        <span>Total</span>
+        <span>Rs. <%= subtotal.toLocaleString() %></span>
+      </div>
+
+      <div class="checkout-cod-badge">
+        <span>💵</span>
+        <span>Cash on Delivery — pay when your order arrives</span>
+      </div>
+    </div>
+
+    <!-- Shipping Form -->
+    <div class="checkout-form-wrap">
+      <h2>Shipping Details</h2>
+      <form action="/checkout" method="POST" class="checkout-form">
+
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name <span class="required">*</span></label>
+          <input class="form-input" type="text" id="name" name="name" required placeholder="e.g. Sara Khan" autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone Number <span class="required">*</span></label>
+          <input class="form-input" type="tel" id="phone" name="phone" required placeholder="e.g. 03001234567" autocomplete="tel">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="address">Full Address <span class="required">*</span></label>
+          <textarea class="form-input" id="address" name="address" required rows="2" placeholder="House no., Street, Area" autocomplete="street-address"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="city">City <span class="required">*</span></label>
+          <input class="form-input" type="text" id="city" name="city" required placeholder="e.g. Lahore" autocomplete="address-level2">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="notes">Order Notes <span class="optional">(optional)</span></label>
+          <textarea class="form-input" id="notes" name="notes" rows="2" placeholder="Any special instructions or color/size preferences..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full btn--large">Place Order</button>
+        <a href="/cart" class="checkout-back-link">← Back to Cart</a>
+      </form>
+    </div>
+
+  </div>
+</section>

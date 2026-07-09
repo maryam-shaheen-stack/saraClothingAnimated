@@ -1,0 +1,45 @@
+<section class="auth-layout" data-reveal>
+  <div class="auth-card">
+    <img src="/images/brand/logo.jpg" alt="Sara Clothing" class="auth-card__logo">
+
+    <h1>Create Account</h1>
+    <p class="auth-card__subtitle">Sign up to check out faster and track your orders.</p>
+
+    <form id="registerForm" novalidate>
+      <div class="form-group">
+        <label for="registerName">Full Name</label>
+        <input type="text" id="registerName" name="name" required aria-describedby="registerNameError" autocomplete="name">
+        <span class="form-error" id="registerNameError" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="registerEmail">Email Address</label>
+        <input type="email" id="registerEmail" name="email" required aria-describedby="registerEmailError" autocomplete="username">
+        <span class="form-error" id="registerEmailError" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="registerPassword">Password</label>
+        <input type="password" id="registerPassword" name="password" required aria-describedby="registerPasswordError" autocomplete="new-password">
+        <span class="form-error" id="registerPasswordError" role="alert"></span>
+        <span class="form-hint">At least 8 characters.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="registerConfirmPassword">Confirm Password</label>
+        <input type="password" id="registerConfirmPassword" name="confirmPassword" required aria-describedby="registerConfirmPasswordError" autocomplete="new-password">
+        <span class="form-error" id="registerConfirmPasswordError" role="alert"></span>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--full" id="registerSubmitBtn">
+        <span class="btn__label">Create Account</span>
+      </button>
+
+      <p class="form-feedback" id="registerFormFeedback" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="auth-card__switch">
+      Already have an account? <a href="/login">Log in</a>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,22 @@
+<article class="testimonial-card">
+  <div class="testimonial-card__rating" aria-label="<%= testimonial.rating %> out of 5 stars">
+    <% for (let i = 0; i < 5; i++) { %>
+      <img
+        src="/icons/star.svg"
+        alt=""
+        width="16"
+        height="16"
+        class="testimonial-card__star <%= i < testimonial.rating ? 'is-filled' : 'is-empty' %>"
+      >
+    <% } %>
+  </div>
+
+  <p class="testimonial-card__message">&ldquo;<%= testimonial.message %>&rdquo;</p>
+
+  <p class="testimonial-card__author">
+    <span class="testimonial-card__name"><%= testimonial.name %></span>
+    <% if (testimonial.location) { %>
+      <span class="testimonial-card__location"><%= testimonial.location %></span>
+    <% } %>
+  </p>
+</article>

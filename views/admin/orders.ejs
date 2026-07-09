@@ -1,0 +1,103 @@
+<div class="admin-page-header">
+  <h1 class="admin-page-title">Orders</h1>
+  <p class="admin-page-subtitle">Manage all customer orders. Use the dropdown to update delivery status.</p>
+</div>
+
+<% if (orders.length === 0) { %>
+  <p class="empty-state">No orders yet.</p>
+<% } else { %>
+<div class="table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>City</th>
+        <th>Phone</th>
+        <th>Items</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Customer Confirmed</th>
+        <th>Date</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach(function(order) { %>
+        <tr id="row-<%= order._id %>">
+          <td><code style="font-size:11px"><%= order._id.toString().slice(-6).toUpperCase() %></code></td>
+          <td>
+            <strong><%= order.shippingAddress.name %></strong><br>
+            <span style="font-size:12px;color:var(--color-text-muted)"><%= order.shippingAddress.phone %></span><br>
+            <span style="font-size:11px;color:var(--color-text-muted)"><%= order.shippingAddress.address %>, <%= order.shippingAddress.city %></span>
+          </td>
+          <td><%= order.shippingAddress.city %></td>
+          <td><%= order.shippingAddress.phone %></td>
+          <td style="font-size:12px">
+            <% order.items.forEach(function(item) { %>
+              <div><%= item.name %> <%= item.size ? '('+item.size+')' : '' %> × <%= item.quantity %></div>
+            <% }); %>
+          </td>
+          <td><strong>Rs. <%= order.total.toLocaleString() %></strong></td>
+          <td>
+            <span class="order-status order-status--<%= order.status %>" id="badge-<%= order._id %>"><%= order.status %></span>
+          </td>
+          <td style="text-align:center">
+            <% if (order.status === 'received') { %>
+              <span style="color:#065F46;font-size:13px;font-weight:600;">✅ Yes<br>
+              <span style="font-size:11px;font-weight:400;"><%= new Date(order.customerConfirmedAt).toLocaleDateString('en-PK') %></span></span>
+            <% } else { %>
+              <span style="color:#9CA3AF;font-size:13px;">Pending</span>
+            <% } %>
+          </td>
+          <td style="font-size:12px"><%= new Date(order.createdAt).toLocaleDateString('en-PK') %></td>
+          <td>
+            <select class="status-select form-input" style="padding:4px 8px;font-size:13px;min-width:110px;" data-order-id="<%= order._id %>">
+              <% ['pending','confirmed','shipped','delivered','cancelled'].forEach(function(s) { %>
+                <option value="<%= s %>" <%= order.status === s || (order.status === 'received' && s === 'delivered') ? 'selected' : '' %>><%= s %></option>
+              <% }); %>
+            </select>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<% } %>
+
+<style>
+.table-wrap { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.admin-table th { background: var(--color-bg-subtle,#f9f9f7); padding: 10px 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--color-border); white-space: nowrap; }
+.admin-table td { padding: 10px 12px; border-bottom: 1px solid var(--color-border); vertical-align: middle; }
+.order-status { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: capitalize; white-space: nowrap; }
+.order-status--pending { background:#FEF3C7; color:#92400E; }
+.order-status--confirmed { background:#DBEAFE; color:#1E40AF; }
+.order-status--shipped { background:#EDE9FE; color:#5B21B6; }
+.order-status--delivered { background:#FEF9C3; color:#713F12; }
+.order-status--received { background:#D1FAE5; color:#065F46; }
+.order-status--cancelled { background:#FEE2E2; color:#991B1B; }
+</style>
+
+<script>
+document.querySelectorAll('.status-select').forEach(function(select) {
+  select.addEventListener('change', async function() {
+    const id = this.dataset.orderId;
+    const status = this.value;
+    try {
+      const res = await fetch(`/admin/orders/${id}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        const badge = document.getElementById(`badge-${id}`);
+        badge.className = `order-status order-status--${status}`;
+        badge.textContent = status;
+      } else {
+        alert('Could not update status.');
+      }
+    } catch(e) { alert('Could not update status.'); }
+  });
+});
+</script>

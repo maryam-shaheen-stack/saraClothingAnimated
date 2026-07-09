@@ -1,0 +1,57 @@
+<div class="admin-page-header">
+  <h1>Contact Messages</h1>
+</div>
+
+<div class="admin-panel">
+  <% if (typeof messages !== 'undefined' && messages.length > 0) { %>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th scope="col">From</th>
+          <th scope="col">Subject</th>
+          <th scope="col">Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% messages.forEach(function(msg) { %>
+          <tr class="<%= msg.read ? '' : 'admin-table__row--unread' %>">
+            <td>
+              <strong><%= msg.name %></strong><br>
+              <a href="mailto:<%= msg.email %>"><%= msg.email %></a>
+            </td>
+            <td><%= msg.subject %></td>
+            <td><%= new Date(msg.createdAt).toLocaleDateString() %></td>
+            <td>
+              <span class="status-badge <%= msg.read ? 'status-badge--read' : 'status-badge--unread' %>">
+                <%= msg.read ? 'Read' : 'Unread' %>
+              </span>
+            </td>
+            <td class="admin-table__actions">
+              <button type="button" class="btn btn--text view-message-btn" data-message-id="<%= msg._id %>">View</button>
+              <button type="button" class="btn btn--text btn--danger delete-message-btn" data-message-id="<%= msg._id %>">Delete</button>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="empty-state">No messages received yet.</p>
+  <% } %>
+</div>
+
+<div class="modal" id="messageModal" hidden>
+  <div class="modal__overlay" data-close-modal></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="messageModalTitle">
+    <div class="modal__header">
+      <h2 id="messageModalTitle">Message</h2>
+      <button type="button" class="modal__close" data-close-modal aria-label="Close">
+        <img src="/icons/close.svg" alt="" width="18" height="18">
+      </button>
+    </div>
+    <div class="modal__body" id="messageModalBody">
+      <!-- Populated dynamically via JS with message details -->
+    </div>
+  </div>
+</div>

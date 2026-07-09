@@ -1,0 +1,32 @@
+<section class="auth-layout" data-reveal>
+  <div class="auth-card">
+    <img src="/images/brand/logo.png" alt="Sara Clothing" class="auth-card__logo">
+
+    <h1>Log In</h1>
+    <p class="auth-card__subtitle">Sign in to your account.</p>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" name="email" required aria-describedby="loginEmailError" autocomplete="username">
+        <span class="form-error" id="loginEmailError" role="alert"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" name="password" required aria-describedby="loginPasswordError" autocomplete="current-password">
+        <span class="form-error" id="loginPasswordError" role="alert"></span>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--full" id="loginSubmitBtn">
+        <span class="btn__label">Log In</span>
+      </button>
+
+      <p class="form-feedback" id="loginFormFeedback" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="auth-card__switch">
+      Don't have an account? <a href="/register">Create one</a>
+    </p>
+  </div>
+</section>

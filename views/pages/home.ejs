@@ -1,0 +1,214 @@
+<section class="hero" aria-roledescription="carousel" aria-label="Featured collections">
+  <!-- 3D Background Floating Elements -->
+  <div class="hero-3d-bg" data-hero-3d-bg aria-hidden="true">
+    <!-- Real WebGL starfield (Three.js). Progressive enhancement: canvas
+         stays empty/invisible if hero-three.js or the CDN fails to load,
+         and the CSS twinkling stars below still cover the effect. -->
+    <canvas class="hero-three-canvas" data-hero-three></canvas>
+    <!-- Twinkling stars: populated by /js/hero-stars.js, empty by default so
+         nothing shows if JS fails to load (progressive enhancement). -->
+    <div class="hero-stars" data-hero-stars></div>
+    <div class="hero-3d-orb hero-3d-orb--1"></div>
+    <div class="hero-3d-orb hero-3d-orb--2"></div>
+    <div class="hero-3d-orb hero-3d-orb--3"></div>
+    <div class="hero-3d-orb hero-3d-orb--4"></div>
+  </div>
+  <div class="hero__slides">
+    <% heroSlides.forEach(function(slide, index) { %>
+      <div class="hero__slide <%= index === 0 ? 'is-active' : '' %>" data-hero-slide aria-hidden="<%= index === 0 ? 'false' : 'true' %>">
+        <div class="hero__image">
+          <img
+            src="<%= slide.image %>"
+            alt="<%= slide.headline || 'Sara Clothing collection' %>"
+            width="1600"
+            height="900"
+            <% if (index === 0) { %>fetchpriority="high"<% } else { %>loading="lazy"<% } %>
+          >
+        </div>
+        <div class="hero__content">
+          <% if (slide.headline) { %><h1 class="hero__title"><%= slide.headline %></h1><% } %>
+          <% if (slide.subtext) { %><p class="hero__subtitle"><%= slide.subtext %></p><% } %>
+          <div class="hero__actions">
+            <a href="<%= slide.buttonLink || '/shop' %>" class="btn btn--primary"><%= slide.buttonText || 'Shop the Collection' %></a>
+            <a href="/about" class="btn btn--outline">Our Story</a>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+
+  <% if (heroSlides.length > 1) { %>
+    <div class="hero__controls">
+      <button type="button" class="hero__arrow hero__arrow--prev" data-hero-prev aria-label="Previous slide">&#8592;</button>
+      <div class="hero__dots" data-hero-dots role="tablist" aria-label="Slide selector">
+        <% heroSlides.forEach(function(slide, index) { %>
+          <button type="button" class="hero__dot <%= index === 0 ? 'is-active' : '' %>" data-hero-dot data-index="<%= index %>" role="tab" aria-label="Go to slide <%= index + 1 %>" aria-selected="<%= index === 0 ? 'true' : 'false' %>"></button>
+        <% }); %>
+      </div>
+      <button type="button" class="hero__arrow hero__arrow--next" data-hero-next aria-label="Next slide">&#8594;</button>
+    </div>
+  <% } %>
+</section>
+
+<section class="section about-teaser" data-reveal>
+  <div class="about-teaser__content">
+    <h2 class="section__heading"><%= story.heading %></h2>
+    <p><%= story.text %></p>
+    <a href="/about" class="link-arrow">Read our full story</a>
+  </div>
+  <div class="about-teaser__image">
+    <img src="<%= story.image || '/images/about/story-thumb.jpg' %>" alt="Sara Clothing atelier" width="600" height="600" loading="lazy">
+  </div>
+</section>
+
+<section class="section featured-products" data-reveal>
+  <div class="section__header">
+    <h2 class="section__heading">Featured Products</h2>
+    <a href="/shop" class="link-arrow">View all</a>
+  </div>
+
+  <% if (typeof featuredProducts !== 'undefined' && featuredProducts.length > 0) { %>
+    <div class="product-grid">
+      <% featuredProducts.forEach(function(product) { %>
+        <%- include('../partials/product-card', { product: product }) %>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <p class="empty-state">New arrivals are being added — check back soon.</p>
+  <% } %>
+</section>
+
+<section class="section categories" data-reveal>
+  <h2 class="section__heading">Shop by Category</h2>
+
+  <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
+    <div class="category-grid">
+      <% categories.forEach(function(category) { %>
+        <a href="/shop?category=<%= category.slug %>" class="category-card">
+          <div class="category-card__shine"></div>
+          <img src="<%= category.image %>" alt="<%= category.name %>" width="400" height="500" loading="lazy">
+          <span class="category-card__label"><%= category.name %></span>
+        </a>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <p class="empty-state">Categories coming soon.</p>
+  <% } %>
+</section>
+
+<section class="section latest-collection" data-reveal>
+  <div class="section__header">
+    <h2 class="section__heading">Latest Collection</h2>
+    <a href="/shop?sort=newest" class="link-arrow">View all</a>
+  </div>
+
+  <% if (typeof latestProducts !== 'undefined' && latestProducts.length > 0) { %>
+    <div class="product-grid">
+      <% latestProducts.forEach(function(product) { %>
+        <%- include('../partials/product-card', { product: product }) %>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <p class="empty-state">New arrivals are being added — check back soon.</p>
+  <% } %>
+</section>
+
+<section class="section why-choose-us" data-reveal>
+  <h2 class="section__heading">Why Choose Sara Clothing</h2>
+  <div class="why-us-grid">
+    <div class="why-us-card" data-flip-card tabindex="0">
+      <div class="why-us-card__inner">
+        <div class="why-us-card__front">
+          <img src="/icons/fabric.svg" alt="" width="32" height="32">
+          <h3>Premium Fabric</h3>
+          <p>Every piece begins with fabric sourced for feel, drape, and durability.</p>
+        </div>
+        <div class="why-us-card__back">
+          <p>We hand-select every roll of fabric before it ever reaches the cutting table — texture and drape first, trend second.</p>
+        </div>
+      </div>
+    </div>
+    <div class="why-us-card" data-flip-card tabindex="0">
+      <div class="why-us-card__inner">
+        <div class="why-us-card__front">
+          <img src="/icons/handmade.svg" alt="" width="32" height="32">
+          <h3>Considered Craft</h3>
+          <p>Designed and finished with attention that mass production skips.</p>
+        </div>
+        <div class="why-us-card__back">
+          <p>Every seam, hem, and finish is checked by hand — the small details a rushed production line would never catch.</p>
+        </div>
+      </div>
+    </div>
+    <div class="why-us-card" data-flip-card tabindex="0">
+      <div class="why-us-card__inner">
+        <div class="why-us-card__front">
+          <img src="/icons/delivery.svg" alt="" width="32" height="32">
+          <h3>Nationwide Delivery</h3>
+          <p>Reliable, tracked delivery across Pakistan on every order.</p>
+        </div>
+        <div class="why-us-card__back">
+          <p>From Karachi to Gilgit — every parcel is trackable end-to-end, so you always know exactly where your order is.</p>
+        </div>
+      </div>
+    </div>
+    <div class="why-us-card" data-flip-card tabindex="0">
+      <div class="why-us-card__inner">
+        <div class="why-us-card__front">
+          <img src="/icons/support.svg" alt="" width="32" height="32">
+          <h3>Personal Support</h3>
+          <p>Real answers from a real team — before and after you order.</p>
+        </div>
+        <div class="why-us-card__back">
+          <p>Message us on WhatsApp any time — a real person replies, not a bot script.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section testimonials" data-reveal>
+  <h2 class="section__heading">What Our Customers Say</h2>
+
+  <% if (typeof testimonials !== 'undefined' && testimonials.length > 0) { %>
+    <div class="testimonial-grid">
+      <% testimonials.forEach(function(testimonial) { %>
+        <%- include('../partials/testimonial-card', { testimonial: testimonial }) %>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <p class="empty-state">Customer stories coming soon.</p>
+  <% } %>
+</section>
+
+<section class="section instagram-gallery" data-reveal>
+  <div class="section__header">
+    <h2 class="section__heading">Follow Us on Instagram</h2>
+    <a href="https://www.instagram.com/saraclothing.pk" target="_blank" rel="noopener noreferrer" class="link-arrow">@saraclothing.pk</a>
+  </div>
+
+  <% if (typeof instagramPosts !== 'undefined' && instagramPosts.length > 0) { %>
+    <div class="instagram-grid">
+      <% instagramPosts.forEach(function(post) { %>
+        <a href="<%= post.link %>" target="_blank" rel="noopener noreferrer" class="instagram-grid__item">
+          <img src="<%= post.image %>" alt="Sara Clothing Instagram post" width="300" height="300" loading="lazy">
+        </a>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <p class="empty-state">Visit our Instagram to see the latest posts.</p>
+  <% } %>
+</section>
+
+<section class="section newsletter-banner" data-reveal>
+  <h2 class="section__heading">Join Our Mailing List</h2>
+  <p>Get early access to new collections and boutique-only offers.</p>
+  <form class="newsletter-form" id="homeNewsletterForm" novalidate>
+    <label for="homeNewsletterEmail" class="sr-only">Email address</label>
+    <input type="email" id="homeNewsletterEmail" name="email" placeholder="Your email address" required>
+    <button type="submit" class="btn btn--primary">
+      <span class="btn__label">Subscribe</span>
+    </button>
+  </form>
+  <p class="newsletter-form__message" id="homeNewsletterMessage" role="status" aria-live="polite"></p>
+</section>

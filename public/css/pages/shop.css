@@ -1,0 +1,111 @@
+.shop-layout {
+  display: grid;
+  gap: var(--space-6);
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: 0 var(--container-padding) var(--space-8);
+}
+
+.shop-filters {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  align-self: start;
+}
+
+.shop-filters__heading {
+  font-size: var(--text-base);
+  margin-bottom: var(--space-5);
+}
+
+.shop-filters__group {
+  margin-bottom: var(--space-5);
+}
+
+.shop-filters__group h3 {
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
+  color: var(--color-ink-muted);
+}
+
+.shop-filters__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.shop-filters__list label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.shop-filters__group input[type="number"] {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-2);
+}
+
+#applyFilters {
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+
+#clearFilters {
+  width: 100%;
+}
+
+.shop-results__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.shop-results__count {
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+}
+
+#sortSelect {
+  padding: var(--space-2) var(--space-3);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-7);
+}
+
+.pagination__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  font-size: var(--text-sm);
+}
+
+.pagination__link.is-active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+@media (min-width: 900px) {
+  .shop-layout {
+    grid-template-columns: 260px 1fr;
+  }
+}

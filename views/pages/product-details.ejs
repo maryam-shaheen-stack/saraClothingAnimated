@@ -1,0 +1,134 @@
+<% if (typeof product !== 'undefined') { %>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="/">Home</a> / <a href="/shop">Shop</a> / <span aria-current="page"><%= product.name %></span>
+</nav>
+
+<section class="product-details">
+
+  <div class="product-details__gallery">
+    <div class="product-details__gallery-container">
+      <div class="product-details__main-image">
+        <img
+          src="<%= product.image %>"
+          alt="<%= product.name %>"
+          id="mainProductImage"
+          width="700"
+          height="875"
+          fetchpriority="high"
+        >
+      </div>
+
+      <!-- 3D Model Viewer Container -->
+      <div class="product-details__3d-container" id="productModelViewerContainer">
+        <model-viewer
+          src="<%= product.gltfModel || 'https://modelviewer.dev/shared-assets/models/MaterialsVariantsShoe.glb' %>"
+          alt="A 3D representation of <%= product.name %>"
+          camera-controls
+          auto-rotate
+          ar
+          shadow-intensity="1"
+          touch-action="pan-y"
+        ></model-viewer>
+      </div>
+    </div>
+
+    <!-- Toggle 3D Button -->
+    <div class="product-details__3d-toggle-wrapper">
+      <button type="button" class="btn btn--3d-toggle" id="toggle3DViewerBtn">
+        <span class="btn__label"><i class="fas fa-cubes"></i> View in 3D</span>
+      </button>
+    </div>
+
+    <% if (product.gallery && product.gallery.length > 0) { %>
+      <div class="product-details__thumbnails">
+        <% product.gallery.forEach(function(img, index) { %>
+          <button type="button" class="product-details__thumb" data-image="<%= img %>" aria-label="View image <%= index + 1 %>">
+            <img src="<%= img %>" alt="" width="100" height="125" loading="lazy">
+          </button>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="product-details__info">
+    <p class="product-details__category"><%= (product.category && product.category.name) ? product.category.name : '' %></p>
+    <h1 class="product-details__name"><%= product.name %></h1>
+
+    <p class="product-details__price">
+      <% if (product.discountPrice) { %>
+        <span class="product-details__price--current">Rs. <%= product.discountPrice.toLocaleString() %></span>
+        <span class="product-details__price--original">Rs. <%= product.price.toLocaleString() %></span>
+      <% } else { %>
+        <span class="product-details__price--current">Rs. <%= product.price.toLocaleString() %></span>
+      <% } %>
+    </p>
+
+    <p class="product-details__description"><%= product.description %></p>
+
+    <% if (product.sizes && product.sizes.length > 0) { %>
+      <div class="product-details__sizes">
+        <h2>Size</h2>
+        <div class="size-selector" role="radiogroup" aria-label="Select size" id="sizeSelector">
+          <% product.sizes.forEach(function(size) { %>
+            <button type="button" class="size-selector__option" data-size="<%= size %>" role="radio" aria-checked="false">
+              <%= size %>
+            </button>
+          <% }); %>
+        </div>
+        <span class="form-error" id="sizeSelectorError" role="alert"></span>
+      </div>
+    <% } %>
+
+    <% if (product.stock > 0) { %>
+      <div class="product-details__quantity">
+        <label for="quantityInput">Quantity</label>
+        <div class="quantity-stepper">
+          <button type="button" class="quantity-stepper__btn" id="quantityDecrease" aria-label="Decrease quantity">&minus;</button>
+          <input type="number" id="quantityInput" value="1" min="1" max="<%= product.stock %>" aria-label="Quantity">
+          <button type="button" class="quantity-stepper__btn" id="quantityIncrease" aria-label="Increase quantity">&plus;</button>
+        </div>
+      </div>
+    <% } %>
+
+    <div class="product-details__actions">
+      <% if (product.stock > 0) { %>
+        <button type="button" class="btn btn--primary btn--large" id="addToCartBtn" data-product-id="<%= product._id %>">
+          <span class="btn__label">Add to Cart</span>
+        </button>
+      <% } else { %>
+        <button type="button" class="btn btn--disabled btn--large" disabled>Sold Out</button>
+      <% } %>
+      <a href="https://wa.me/?text=I'm%20interested%20in%20<%= encodeURIComponent(product.name) %>" target="_blank" rel="noopener noreferrer" class="btn btn--outline btn--large">
+        Ask on WhatsApp
+      </a>
+    </div>
+
+    <p class="product-details__feedback" id="cartFeedback" role="status" aria-live="polite"></p>
+
+    <div class="product-details__meta">
+      <p><strong>Fabric:</strong> <%= product.fabric || 'Details available on request' %></p>
+      <p><strong>Availability:</strong> <%= product.stock > 0 ? 'In Stock' : 'Currently Unavailable' %></p>
+    </div>
+  </div>
+
+</section>
+
+<% if (typeof relatedProducts !== 'undefined' && relatedProducts.length > 0) { %>
+  <section class="section related-products" data-reveal>
+    <h2 class="section__heading">You May Also Like</h2>
+    <div class="product-grid">
+      <% relatedProducts.forEach(function(related) { %>
+        <%- include('../partials/product-card', { product: related }) %>
+      <% }); %>
+    </div>
+  </section>
+<% } %>
+
+<% } else { %>
+  <section class="page-header">
+    <h1>Product Not Found</h1>
+    <p>This product may have been removed or is no longer available.</p>
+    <a href="/shop" class="btn btn--primary">Back to Shop</a>
+  </section>
+<% } %>

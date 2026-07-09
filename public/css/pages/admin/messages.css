@@ -1,0 +1,14 @@
+/* Messages-specific tweaks. */
+
+.modal__body {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.modal__body p {
+  margin-bottom: var(--space-3);
+}
+
+.modal__body strong {
+  color: var(--color-ink);
+}

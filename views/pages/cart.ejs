@@ -1,0 +1,65 @@
+<section class="page-header">
+  <h1>Your Cart</h1>
+</section>
+
+<section class="cart-page">
+  <% if (typeof cart !== 'undefined' && cart.lines.length > 0) { %>
+
+    <div class="cart-items" id="cartItems">
+      <% cart.lines.forEach(function(line) { %>
+        <div class="cart-item <%= !line.isAvailable ? 'cart-item--unavailable' : '' %>" data-cart-item-id="<%= line.itemId %>">
+          <a href="/shop/<%= line.product._id %>" class="cart-item__image">
+            <img src="<%= line.product.image %>" alt="<%= line.product.name %>" width="110" height="140" loading="lazy">
+          </a>
+
+          <div class="cart-item__details">
+            <a href="/shop/<%= line.product._id %>" class="cart-item__name"><%= line.product.name %></a>
+            <% if (line.size) { %><p class="cart-item__size">Size: <%= line.size %></p><% } %>
+            <p class="cart-item__unit-price">Rs. <%= line.unitPrice.toLocaleString() %></p>
+
+            <% if (!line.isAvailable) { %>
+              <p class="cart-item__warning"><%= line.availabilityMessage %> — please remove this item to continue.</p>
+            <% } %>
+
+            <div class="cart-item__row">
+              <div class="quantity-stepper quantity-stepper--small" data-quantity-stepper>
+                <button type="button" class="quantity-stepper__btn" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                <input type="number" value="<%= line.quantity %>" min="1" max="<%= line.maxQuantity %>" aria-label="Quantity" data-qty-input <%= !line.isAvailable ? 'disabled' : '' %>>
+                <button type="button" class="quantity-stepper__btn" data-qty-increase aria-label="Increase quantity">&plus;</button>
+              </div>
+              <button type="button" class="btn btn--text btn--danger" data-remove-item>Remove</button>
+            </div>
+          </div>
+
+          <p class="cart-item__line-total">Rs. <%= line.lineTotal.toLocaleString() %></p>
+        </div>
+      <% }); %>
+    </div>
+
+    <aside class="cart-summary">
+      <h2>Order Summary</h2>
+      <div class="cart-summary__row">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">Rs. <%= cart.subtotal.toLocaleString() %></span>
+      </div>
+      <p class="cart-summary__note">Shipping and any applicable taxes are calculated at checkout.</p>
+
+      <% if (cart.hasUnavailableItems) { %>
+        <p class="cart-summary__warning">Some items in your cart are unavailable. Remove them to proceed.</p>
+      <% } %>
+
+      <% if (!cart.hasUnavailableItems) { %>
+      <a href="/checkout" class="btn btn--primary btn--full btn--large">Proceed to Checkout</a>
+      <% } else { %>
+      <button type="button" class="btn btn--primary btn--full btn--large" disabled>Proceed to Checkout</button>
+      <% } %>
+      <a href="/shop" class="link-arrow">Continue Shopping</a>
+    </aside>
+
+  <% } else { %>
+    <div class="cart-empty">
+      <p>Your cart is empty.</p>
+      <a href="/shop" class="btn btn--primary">Start Shopping</a>
+    </div>
+  <% } %>
+</section>

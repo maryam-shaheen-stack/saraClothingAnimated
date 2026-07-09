@@ -1,0 +1,5 @@
+/* Testimonials-specific tweaks. */
+
+#testimonialRating {
+  max-width: 200px;
+}

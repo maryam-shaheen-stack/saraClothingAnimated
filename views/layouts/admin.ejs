@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' | Sara Clothing Admin' : 'Sara Clothing Admin' %></title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="icon" type="image/png" href="/images/brand/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/admin/dashboard.css">
+  <% if (typeof pageStylesheet !== 'undefined') { %>
+    <link rel="stylesheet" href="/css/pages/admin/<%= pageStylesheet %>.css">
+  <% } %>
+</head>
+<body class="admin-body">
+
+  <a href="#admin-main" class="skip-link">Skip to main content</a>
+
+  <div class="admin-layout">
+
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__brand">
+        <img src="/images/brand/logo.png" alt="Sara Clothing" style="height:44px;width:44px;object-fit:contain;border-radius:50%;">
+      </div>
+
+      <nav class="admin-sidebar__nav" aria-label="Admin navigation">
+        <a href="/admin/dashboard" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'dashboard' ? 'is-active' : '' %>">
+          <img src="/icons/grid.svg" alt="" width="18" height="18"> Dashboard
+        </a>
+        <a href="/admin/products" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'products' ? 'is-active' : '' %>">
+          <img src="/icons/shirt.svg" alt="" width="18" height="18"> Products
+        </a>
+        <a href="/admin/categories" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'categories' ? 'is-active' : '' %>">
+          <img src="/icons/tag.svg" alt="" width="18" height="18"> Categories
+        </a>
+        <a href="/admin/site-content" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'site-content' ? 'is-active' : '' %>">
+          <img src="/icons/image.svg" alt="" width="18" height="18"> Homepage Content
+        </a>
+        <a href="/admin/testimonials" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'testimonials' ? 'is-active' : '' %>">
+          <img src="/icons/star.svg" alt="" width="18" height="18"> Testimonials
+        </a>
+        <a href="/admin/announcements" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'announcements' ? 'is-active' : '' %>">
+          <img src="/icons/megaphone.svg" alt="" width="18" height="18"> Announcements
+        </a>
+        <a href="/admin/orders" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'orders' ? 'is-active' : '' %>">
+          <img src="/icons/clock.svg" alt="" width="18" height="18"> Orders
+        </a>
+        <a href="/admin/messages" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'messages' ? 'is-active' : '' %>">
+          <img src="/icons/mail.svg" alt="" width="18" height="18"> Messages
+        </a>
+        <a href="/admin/subscribers" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'subscribers' ? 'is-active' : '' %>">
+          <img src="/icons/users.svg" alt="" width="18" height="18"> Subscribers
+        </a>
+        <a href="/admin/users" class="admin-sidebar__link <%= typeof activeAdminPage !== 'undefined' && activeAdminPage === 'users' ? 'is-active' : '' %>">
+          <img src="/icons/user.svg" alt="" width="18" height="18"> Users
+        </a>
+      </nav>
+
+      <form action="/logout" method="POST" class="admin-sidebar__logout">
+        <button type="submit" class="btn btn--text">Log Out</button>
+      </form>
+    </aside>
+
+    <div class="admin-content">
+      <header class="admin-topbar">
+        <button type="button" class="admin-topbar__toggle" id="adminSidebarToggle" aria-expanded="false" aria-controls="adminSidebarNav" aria-label="Toggle sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <p class="admin-topbar__user">
+          <% if (typeof currentUser !== 'undefined') { %>
+            Signed in as <strong><%= currentUser.name %></strong>
+          <% } %>
+        </p>
+      </header>
+
+      <main id="admin-main">
+        <%- body %>
+      </main>
+    </div>
+
+  </div>
+
+  <script src="/js/main.js" defer></script>
+  <% if (typeof pageScript !== 'undefined') { %>
+    <script src="/js/pages/admin/<%= pageScript %>.js" defer></script>
+  <% } %>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<footer class="site-footer">
+  <div class="site-footer__inner">
+
+    <div class="site-footer__brand">
+      <p class="site-footer__logo">Sara Clothing</p>
+      <p class="site-footer__tagline">Considered, well-made clothing &mdash; designed in-house, fitted with care, and produced in small batches rather than mass runs.</p>
+
+      <div class="site-footer__social-icons">
+        <a href="https://www.instagram.com/saraclothing.pk" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+          </svg>
+        </a>
+        <a href="https://wa.me/923000000000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="site-footer__links">
+      <h3>Explore</h3>
+      <a href="/shop">Shop</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/faq">FAQ</a>
+    </div>
+
+    <div class="site-footer__links">
+      <h3>Legal</h3>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms &amp; Conditions</a>
+    </div>
+
+    <div class="site-footer__newsletter">
+      <h3>Stay in the Loop</h3>
+      <p>New collections and boutique-only offers, straight to your inbox.</p>
+      <form class="newsletter-form newsletter-form--footer" id="footerNewsletterForm" novalidate>
+        <label for="footerNewsletterEmail" class="sr-only">Email address</label>
+        <input type="email" id="footerNewsletterEmail" name="email" placeholder="Your email address" required>
+        <button type="submit" class="btn btn--primary">
+          <span class="btn__label">Subscribe</span>
+        </button>
+      </form>
+      <p class="newsletter-form__message" id="footerNewsletterMessage" role="status" aria-live="polite"></p>
+    </div>
+
+  </div>
+
+  <div class="site-footer__bottom">
+    <p class="site-footer__copyright">&copy; <%= new Date().getFullYear() %> Sara Clothing. All rights reserved.</p>
+    <a href="mailto:hello@saraclothing.pk" class="site-footer__contact-email">hello@saraclothing.pk</a>
+  </div>
+</footer>

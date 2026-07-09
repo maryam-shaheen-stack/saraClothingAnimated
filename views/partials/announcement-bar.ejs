@@ -1,0 +1,15 @@
+<% if (typeof announcements !== 'undefined' && announcements.length > 0) { %>
+  <div class="announcement-bar">
+    <% announcements.forEach(function (announcement) { %>
+      <div class="announcement-bar__item <%= announcement.type ? 'announcement-bar__item--' + announcement.type : '' %>" data-announcement-id="<%= announcement._id %>">
+        <span>
+          <%= announcement.message %>
+          <% if (announcement.link) { %>
+            <a href="<%= announcement.link %>" class="announcement-bar__link"><%= announcement.linkText || 'Learn more' %></a>
+          <% } %>
+        </span>
+        <button type="button" class="announcement-bar__close" aria-label="Dismiss announcement">&times;</button>
+      </div>
+    <% }); %>
+  </div>
+<% } %>

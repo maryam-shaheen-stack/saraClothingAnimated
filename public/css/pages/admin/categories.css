@@ -1,0 +1,6 @@
+/* Categories-specific tweaks. */
+
+.admin-table td img {
+  border-radius: 50%;
+  object-fit: cover;
+}

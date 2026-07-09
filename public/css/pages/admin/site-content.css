@@ -1,0 +1,100 @@
+/* Homepage Content admin page — hero slide cards + story form layout.
+   Reuses .admin-page-header / .admin-panel / .modal / .form-group / .btn
+   from components.css; this file only adds what's unique to this page. */
+
+.admin-page-header--secondary {
+  margin-top: var(--space-2);
+}
+
+/* ---- Hero slide cards ---- */
+
+.slide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+
+.slide-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+}
+
+.slide-card__image {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.slide-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-card__badge {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  background-color: rgba(43, 36, 32, 0.75);
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+}
+
+.slide-card__body {
+  padding: var(--space-3) var(--space-4) 0;
+  flex-grow: 1;
+}
+
+.slide-card__headline {
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.slide-card__subtext {
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+}
+
+.slide-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+}
+
+.slide-card__actions .btn {
+  padding-inline: var(--space-2);
+}
+
+.slide-card__actions .btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ---- Story form ---- */
+
+.story-form__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+.story-form__image-preview img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+@media (min-width: 700px) {
+  .story-form__layout {
+    grid-template-columns: 160px 1fr;
+  }
+}

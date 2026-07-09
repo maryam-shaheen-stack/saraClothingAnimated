@@ -1,0 +1,56 @@
+<header class="navbar" data-navbar>
+  <div class="navbar__inner">
+
+    <a href="/" class="navbar__logo">
+      <img src="/images/brand/logo.png" alt="Sara Clothing"  class="navbar__logo-img">
+      <span class="navbar__logo-text">Sara Clothing</span>
+    </a>
+
+    <nav class="navbar__menu" id="navbarMenu" aria-label="Primary">
+      <a href="/" class="navbar__link <%= typeof currentPath !== 'undefined' && currentPath === '/' ? 'is-active' : '' %>">Home</a>
+      <a href="/shop" class="navbar__link <%= typeof currentPath !== 'undefined' && currentPath.startsWith('/shop') ? 'is-active' : '' %>">Shop</a>
+      <a href="/about" class="navbar__link <%= typeof currentPath !== 'undefined' && currentPath === '/about' ? 'is-active' : '' %>">About</a>
+      <a href="/contact" class="navbar__link <%= typeof currentPath !== 'undefined' && currentPath === '/contact' ? 'is-active' : '' %>">Contact</a>
+      <a href="/faq" class="navbar__link <%= typeof currentPath !== 'undefined' && currentPath === '/faq' ? 'is-active' : '' %>">FAQ</a>
+    </nav>
+
+    <div class="navbar__actions">
+      <button type="button" class="navbar__icon-btn" id="navbarSearchToggle" aria-label="Search" aria-expanded="false" aria-controls="navbarSearchBar">
+        <img src="/icons/search.svg" alt="" width="20" height="20">
+      </button>
+
+      <a href="/cart" class="navbar__icon-link" aria-label="View cart">
+        <img src="/icons/cart.svg" alt="" width="20" height="20">
+        <span class="navbar__cart-count" data-cart-count hidden>0</span>
+      </a>
+
+      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+        <% if (currentUser.isStaff && currentUser.isStaff()) { %>
+          <a href="/admin/dashboard" class="navbar__link">Admin</a>
+        <% } else { %>
+          <a href="/account/dashboard" class="navbar__link">My Account</a>
+        <% } %>
+        <form action="/logout" method="POST" style="display:inline">
+          <button type="submit" class="btn btn--text">Log Out</button>
+        </form>
+      <% } else { %>
+        <a href="/login" class="navbar__link">Log In</a>
+      <% } %>
+
+      <button type="button" class="navbar__toggle" id="navbarToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbarMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+  </div>
+
+  <div class="navbar__search-bar" id="navbarSearchBar" hidden>
+    <form action="/shop" method="GET" class="navbar__search-form">
+      <label for="navbarSearchInput" class="sr-only">Search products</label>
+      <input type="search" id="navbarSearchInput" name="search" placeholder="Search products...">
+      <button type="submit" class="btn btn--primary">Search</button>
+    </form>
+  </div>
+</header>

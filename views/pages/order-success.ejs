@@ -1,0 +1,18 @@
+<section class="success-page">
+  <div class="success-card">
+    <div class="success-icon">🎉</div>
+    <h1>Order Placed Successfully!</h1>
+    <p>Thank you <strong><%= typeof name !== 'undefined' ? name : '' %></strong>! We have received your order and will contact you shortly to confirm delivery details.</p>
+
+    <div class="success-info">
+      <p>📦 Your order will be delivered via <strong>Cash on Delivery</strong></p>
+      <p>📞 Our team will call you on the number provided</p>
+      <p>📱 You can track your order status in <strong>My Account</strong></p>
+    </div>
+
+    <div class="success-actions">
+      <a href="/shop" class="btn btn--primary">Continue Shopping</a>
+      <a href="/account/dashboard" class="btn btn--outline">My Orders</a>
+    </div>
+  </div>
+</section>

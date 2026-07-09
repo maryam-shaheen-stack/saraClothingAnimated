@@ -1,0 +1,6 @@
+/* Announcements-specific tweaks.
+   Table, modal, and form styles live in components.css. */
+
+#announcementType {
+  max-width: 200px;
+}

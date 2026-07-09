@@ -1,0 +1,126 @@
+<section class="page-header">
+  <h1>Welcome back, <%= currentUser.name %></h1>
+  <p>Manage your orders and account details here.</p>
+</section>
+
+<section class="account-dashboard" data-reveal>
+
+  <div class="account-dashboard__card">
+    <h2>My Orders</h2>
+
+    <% if (recentOrders && recentOrders.length > 0) { %>
+      <div class="account-orders">
+        <% recentOrders.forEach(function(order) { %>
+          <div class="account-order-card" id="order-<%= order._id %>">
+            <div class="account-order-card__header">
+              <div>
+                <span class="account-order-card__id">Order #<%= order._id.toString().slice(-6).toUpperCase() %></span>
+                <span class="account-order-card__date"><%= new Date(order.createdAt).toLocaleDateString('en-PK', { day:'numeric', month:'short', year:'numeric' }) %></span>
+              </div>
+              <span class="order-status-badge order-status-badge--<%= order.status %>"><%= order.status %></span>
+            </div>
+
+            <div class="account-order-card__items">
+              <% order.items.forEach(function(item) { %>
+                <div class="account-order-item">
+                  <img src="<%= item.image %>" alt="<%= item.name %>" width="50" height="62">
+                  <div>
+                    <p class="account-order-item__name"><%= item.name %></p>
+                    <% if (item.size) { %><p class="account-order-item__meta">Size: <%= item.size %></p><% } %>
+                    <p class="account-order-item__meta">Qty: <%= item.quantity %> × Rs. <%= item.price.toLocaleString() %></p>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+
+            <div class="account-order-card__footer">
+              <span class="account-order-card__total">Total: <strong>Rs. <%= order.total.toLocaleString() %></strong></span>
+
+              <% if (order.status === 'delivered') { %>
+                <button
+                  class="btn btn--outline btn--sm confirm-received-btn"
+                  data-order-id="<%= order._id %>"
+                  onclick="confirmReceived('<%= order._id %>', this)">
+                  ✅ I Received My Order
+                </button>
+              <% } else if (order.status === 'received') { %>
+                <span class="account-order-confirmed">✅ Confirmed Received</span>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p class="empty-state">You haven't placed any orders yet.</p>
+      <a href="/shop" class="btn btn--primary">Start Shopping</a>
+    <% } %>
+  </div>
+
+  <div class="account-dashboard__card">
+    <h2>Account Details</h2>
+    <p><strong>Name:</strong> <%= currentUser.name %></p>
+    <p><strong>Email:</strong> <%= currentUser.email %></p>
+    <form action="/logout" method="POST" style="margin-top: 16px;">
+      <button type="submit" class="btn btn--outline">Log Out</button>
+    </form>
+  </div>
+
+</section>
+
+<style>
+.account-dashboard { display: grid; gap: var(--space-5); max-width: var(--container-max); margin-inline: auto; padding: var(--space-4) var(--container-padding) var(--space-9); }
+@media(min-width:800px) { .account-dashboard { grid-template-columns: 2fr 1fr; align-items: start; } }
+.account-dashboard__card { background:#fff; border:1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
+.account-dashboard__card h2 { font-size: var(--text-lg); margin-bottom: var(--space-4); padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-border); }
+
+.account-orders { display: flex; flex-direction: column; gap: var(--space-4); }
+.account-order-card { border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+.account-order-card__header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--color-surface, #faf9f7); gap: 8px; }
+.account-order-card__id { font-weight: 700; font-size: 13px; display: block; }
+.account-order-card__date { font-size: 12px; color: var(--color-ink-muted); }
+.account-order-card__items { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+.account-order-item { display: flex; gap: 12px; align-items: center; }
+.account-order-item img { border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+.account-order-item__name { font-size: 13px; font-weight: 600; margin: 0; }
+.account-order-item__meta { font-size: 12px; color: var(--color-ink-muted); margin: 2px 0 0; }
+.account-order-card__footer { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-top: 1px solid var(--color-border); flex-wrap: wrap; gap: 8px; }
+.account-order-card__total { font-size: 14px; }
+.account-order-confirmed { font-size: 13px; color: #065F46; font-weight: 600; }
+.btn--sm { padding: 6px 14px; font-size: 13px; }
+
+/* Status badges */
+.order-status-badge { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: capitalize; white-space: nowrap; }
+.order-status-badge--pending { background:#FEF3C7; color:#92400E; }
+.order-status-badge--confirmed { background:#DBEAFE; color:#1E40AF; }
+.order-status-badge--shipped { background:#EDE9FE; color:#5B21B6; }
+.order-status-badge--delivered { background:#FEF9C3; color:#713F12; }
+.order-status-badge--received { background:#D1FAE5; color:#065F46; }
+.order-status-badge--cancelled { background:#FEE2E2; color:#991B1B; }
+</style>
+
+<script>
+async function confirmReceived(orderId, btn) {
+  if (!confirm('Confirm that you have received this order?')) return;
+  btn.disabled = true;
+  btn.textContent = 'Confirming...';
+  try {
+    const res = await fetch(`/account/orders/${orderId}/confirm-received`, { method: 'POST' });
+    const data = await res.json();
+    if (res.ok) {
+      const footer = btn.closest('.account-order-card__footer');
+      btn.remove();
+      const confirmed = document.createElement('span');
+      confirmed.className = 'account-order-confirmed';
+      confirmed.textContent = '✅ Confirmed Received';
+      footer.appendChild(confirmed);
+      // Update badge
+      const badge = document.querySelector(`#order-${orderId} .order-status-badge`);
+      if (badge) { badge.className = 'order-status-badge order-status-badge--received'; badge.textContent = 'received'; }
+    } else {
+      alert(data.message || 'Could not confirm.');
+      btn.disabled = false;
+      btn.textContent = '✅ I Received My Order';
+    }
+  } catch(e) { alert('Something went wrong.'); btn.disabled = false; }
+}
+</script>

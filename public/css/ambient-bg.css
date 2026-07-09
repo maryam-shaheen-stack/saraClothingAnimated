@@ -1,0 +1,151 @@
+/* ==========================================================================
+   SARA CLOTHING — AMBIENT-BG.CSS
+   Sitewide ambient background: the luxury mall-interior photograph, plus a
+   handful of soft "roaming" blurred light-circles drifting slowly over it,
+   PLUS (new) a live Unicorn Studio WebGL scene (gold sparkle/light scene,
+   project 6yT3p3QeHwxLfGG1oNtE) layered between the photo and the legibility
+   wash — this is the animated background captured in the reference video.
+   Sits behind ALL page content (navbar, hero, main, footer) on every page,
+   since it's injected once via layouts/main.ejs.
+   The photo + wash + orbs remain pure CSS (nothing to fail to load); the
+   Unicorn Studio layer enhances progressively on top and simply stays
+   invisible if its script/CDN is blocked or slow.
+   ========================================================================== */
+
+.ambient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;          /* stays behind normal in-flow content, in front of body bg */
+  overflow: hidden;
+  pointer-events: none;  /* never blocks clicks/scroll/taps/forms */
+}
+
+/* Base photograph layer, softened with a light ivory wash so page text
+   (which sits in normal-flow content on top) stays legible everywhere,
+   including over the busiest part of the image. */
+.ambient-bg__photo {
+  position: absolute;
+  inset: -2%;                       /* slight overscan so the slow pan below never reveals an edge */
+  background-image: url('/images/backgrounds/mall-lobby.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Live Unicorn Studio scene (gold sparkle / light effect) — sits above the
+   photo but underneath the ivory wash, so it reads as a soft animated glow
+   over the mall photo rather than a distracting foreground layer. Forced to
+   fill the viewport regardless of the fixed 1440x900 size baked into the
+   embed's inline style. */
+.ambient-bg__unicorn {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden;
+  opacity: 0.7;
+  mix-blend-mode: screen; /* lets gold sparkle/light show without darkening page text below */
+}
+.ambient-bg__unicorn canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-bg__unicorn { display: none; }
+}
+
+.ambient-bg__wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(250, 246, 241, 0.72) 0%,
+    rgba(250, 246, 241, 0.55) 40%,
+    rgba(250, 246, 241, 0.72) 100%
+  );
+}
+
+/* Roaming soft-glow circles — echo the glossy orbs already in the photo,
+   drifting gently. Same restrained gold/maroon/ivory palette as
+   tokens.css, so they read as part of the brand rather than decoration. */
+.ambient-bg__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.3;
+  will-change: transform;
+}
+
+.ambient-bg__orb--1 {
+  top: 8%;
+  left: 8%;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, #c9a15a 0%, transparent 72%);
+  animation: ambientDrift1 34s ease-in-out infinite;
+}
+
+.ambient-bg__orb--2 {
+  top: 55%;
+  right: 10%;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, var(--color-accent) 0%, transparent 72%);
+  animation: ambientDrift2 40s ease-in-out infinite;
+}
+
+.ambient-bg__orb--3 {
+  bottom: 6%;
+  left: 22%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, var(--color-border-strong) 0%, transparent 75%);
+  animation: ambientDrift3 28s ease-in-out infinite;
+}
+
+.ambient-bg__orb--4 {
+  top: 25%;
+  right: 30%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #f3e1e0 0%, transparent 78%);
+  animation: ambientDrift1 45s ease-in-out infinite reverse;
+}
+
+@keyframes ambientDrift1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(40px, 60px) scale(1.08); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes ambientDrift2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-50px, -40px) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes ambientDrift3 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(35px, -50px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Respect reduced-motion: keep the photo + wash (still looks intentional),
+   just freeze the orbs in place instead of animating them. */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-bg__orb {
+    animation: none !important;
+  }
+}
+
+/* Smaller screens: fewer/smaller orbs so nothing feels cluttered or costs
+   unnecessary paint on low-power devices. */
+@media (max-width: 700px) {
+  .ambient-bg__orb--2,
+  .ambient-bg__orb--4 {
+    display: none;
+  }
+  .ambient-bg__orb--1 { width: 170px; height: 170px; }
+  .ambient-bg__orb--3 { width: 140px; height: 140px; }
+}

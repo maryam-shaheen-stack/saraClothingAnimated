@@ -1,0 +1,7 @@
+/* Dashboard-specific layout.
+   Shared admin shell (.admin-layout, .admin-sidebar, .stats-grid,
+   .stat-card, .admin-table) lives in components.css. */
+
+.admin-panel__header .link-arrow {
+  font-size: var(--text-sm);
+}

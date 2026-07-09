@@ -1,0 +1,80 @@
+<section class="page-header">
+  <h1>Shop</h1>
+  <p>Browse the full Sara Clothing collection.</p>
+</section>
+
+<section class="shop-layout">
+
+  <aside class="shop-filters" aria-label="Product filters">
+    <h2 class="shop-filters__heading">Filter</h2>
+
+    <div class="shop-filters__group">
+      <h3>Category</h3>
+      <ul class="shop-filters__list">
+        <li>
+          <label>
+            <input type="checkbox" name="category" value="all" checked> All
+          </label>
+        </li>
+        <% if (typeof categories !== 'undefined') { %>
+          <% categories.forEach(function(category) { %>
+            <li>
+              <label>
+                <input type="checkbox" name="category" value="<%= category.slug %>"> <%= category.name %>
+              </label>
+            </li>
+          <% }); %>
+        <% } %>
+      </ul>
+    </div>
+
+    <div class="shop-filters__group">
+      <h3>Price Range</h3>
+      <label for="minPrice" class="sr-only">Minimum price</label>
+      <input type="number" id="minPrice" name="minPrice" placeholder="Min" min="0">
+      <label for="maxPrice" class="sr-only">Maximum price</label>
+      <input type="number" id="maxPrice" name="maxPrice" placeholder="Max" min="0">
+    </div>
+
+    <button type="button" class="btn btn--outline" id="applyFilters">Apply Filters</button>
+    <button type="button" class="btn btn--text" id="clearFilters">Clear All</button>
+  </aside>
+
+  <div class="shop-results">
+    <div class="shop-results__bar">
+      <p class="shop-results__count" id="resultsCount">
+        <% if (typeof products !== 'undefined') { %>
+          <%= products.length %> products
+        <% } %>
+      </p>
+      <label for="sortSelect" class="sr-only">Sort products</label>
+      <select id="sortSelect" name="sort">
+        <option value="newest">Newest</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="popular">Most Popular</option>
+      </select>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <% if (typeof products !== 'undefined' && products.length > 0) { %>
+        <% products.forEach(function(product) { %>
+          <%- include('../partials/product-card', { product: product }) %>
+        <% }); %>
+      <% } else { %>
+        <p class="empty-state">No products match your filters. Try adjusting your search.</p>
+      <% } %>
+    </div>
+
+    <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+      <nav class="pagination" aria-label="Product pages">
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="/shop?page=<%= i %>" class="pagination__link <%= currentPage === i ? 'is-active' : '' %>" <%= currentPage === i ? 'aria-current="page"' : '' %>>
+            <%= i %>
+          </a>
+        <% } %>
+      </nav>
+    <% } %>
+  </div>
+
+</section>

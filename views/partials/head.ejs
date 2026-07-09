@@ -1,0 +1,38 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4ede4">
+
+<title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' | Sara Clothing' : 'Sara Clothing' %></title>
+<meta name="description" content="<%= typeof pageDescription !== 'undefined' ? pageDescription : 'Sara Clothing \u2014 considered, well-made clothing designed in-house and produced in small batches.' %>">
+
+<link rel="icon" type="image/png" href="/icons/favicon.png">
+
+<!-- Preconnect to speed up font loading if using Google Fonts; remove if fonts are self-hosted -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Google model-viewer web component for interactive 3D models -->
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+<!-- Core styles: tokens (colors/type/spacing) -> base (resets/global) -> components (buttons/cards/forms/modals) -->
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/components.css">
+
+<!-- Sitewide ambient background photo + roaming glow circles (pure CSS, no JS) -->
+<link rel="stylesheet" href="/css/ambient-bg.css">
+
+<!-- Page-specific stylesheet, e.g. pages/home.css, pages/shop.css, pages/admin/products.css -->
+<% if (typeof pageCss !== 'undefined') { %>
+  <link rel="stylesheet" href="/css/pages/<%= pageCss %>.css">
+<% } %>
+
+<!-- Open Graph / social preview -->
+<meta property="og:title" content="<%= typeof pageTitle !== 'undefined' ? pageTitle + ' | Sara Clothing' : 'Sara Clothing' %>">
+<meta property="og:description" content="<%= typeof pageDescription !== 'undefined' ? pageDescription : 'Considered, well-made clothing.' %>">
+<meta property="og:type" content="website">
+<meta property="og:image" content="<%= typeof pageImage !== 'undefined' ? pageImage : '/images/brand/og-default.jpg' %>">

@@ -1,0 +1,64 @@
+<div class="admin-page-header">
+  <div>
+    <h1>Dashboard</h1>
+    <p>Overview of your store's activity.</p>
+  </div>
+  <a href="/" class="btn btn--outline">
+    <span class="btn__label">Back to Home</span>
+  </a>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <p class="stat-card__label">Total Products</p>
+    <p class="stat-card__value"><%= typeof stats !== 'undefined' ? stats.productCount : 0 %></p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-card__label">Categories</p>
+    <p class="stat-card__value"><%= typeof stats !== 'undefined' ? stats.categoryCount : 0 %></p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-card__label">Unread Messages</p>
+    <p class="stat-card__value"><%= typeof stats !== 'undefined' ? stats.unreadMessageCount : 0 %></p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-card__label">Newsletter Subscribers</p>
+    <p class="stat-card__value"><%= typeof stats !== 'undefined' ? stats.subscriberCount : 0 %></p>
+  </div>
+</div>
+
+<div class="admin-panel">
+  <div class="admin-panel__header">
+    <h2>Recent Messages</h2>
+    <a href="/admin/messages" class="link-arrow">View all</a>
+  </div>
+
+  <% if (typeof recentMessages !== 'undefined' && recentMessages.length > 0) { %>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Subject</th>
+          <th scope="col">Date</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% recentMessages.forEach(function(msg) { %>
+          <tr>
+            <td><%= msg.name %></td>
+            <td><%= msg.subject %></td>
+            <td><%= new Date(msg.createdAt).toLocaleDateString() %></td>
+            <td>
+              <span class="status-badge <%= msg.read ? 'status-badge--read' : 'status-badge--unread' %>">
+                <%= msg.read ? 'Read' : 'Unread' %>
+              </span>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="empty-state">No messages yet.</p>
+  <% } %>
+</div>

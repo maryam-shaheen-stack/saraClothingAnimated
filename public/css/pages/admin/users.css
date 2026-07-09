@@ -1,0 +1,5 @@
+/* Users-specific tweaks. */
+
+#userPassword + .form-hint {
+  margin-bottom: 0;
+}

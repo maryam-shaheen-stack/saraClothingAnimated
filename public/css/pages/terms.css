@@ -1,0 +1,28 @@
+.legal-content {
+  max-width: 720px;
+  margin-inline: auto;
+  padding: 0 var(--container-padding) var(--space-8);
+}
+
+.legal-content h2 {
+  font-size: var(--text-lg);
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-3);
+}
+
+.legal-content h2:first-child {
+  margin-top: 0;
+}
+
+.legal-content p {
+  margin-bottom: var(--space-4);
+  line-height: var(--leading-normal);
+}
+
+.legal-content a {
+  color: var(--color-primary);
+}
+
+.legal-content a:hover {
+  text-decoration: underline;
+}
