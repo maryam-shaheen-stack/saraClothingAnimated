@@ -13,23 +13,7 @@
       <a href="/contact" class="navbar__link <%= typeof currentPath !== 'undefined' && currentPath === '/contact' ? 'is-active' : '' %>">Contact</a>
       <a href="/faq" class="navbar__link <%= typeof currentPath !== 'undefined' && currentPath === '/faq' ? 'is-active' : '' %>">FAQ</a>
 
-      <!-- Mobile-only: account/login links move down here so the top row
-           (logo + search + cart + hamburger) never runs out of space and
-           pushes the hamburger button off-screen. Hidden on desktop via
-           CSS since the same links already show in navbar__actions there. -->
-      <div class="navbar__menu-divider" aria-hidden="true"></div>
-      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
-        <% if (currentUser.isStaff && currentUser.isStaff()) { %>
-          <a href="/admin/dashboard" class="navbar__link navbar__link--mobile-only">Admin</a>
-        <% } else { %>
-          <a href="/account/dashboard" class="navbar__link navbar__link--mobile-only">My Account</a>
-        <% } %>
-        <form action="/logout" method="POST" class="navbar__link--mobile-only">
-          <button type="submit" class="btn btn--text">Log Out</button>
-        </form>
-      <% } else { %>
-        <a href="/login" class="navbar__link navbar__link--mobile-only">Log In</a>
-      <% } %>
+
     </nav>
 
     <div class="navbar__actions">
@@ -44,15 +28,15 @@
 
       <% if (typeof currentUser !== 'undefined' && currentUser) { %>
         <% if (currentUser.isStaff && currentUser.isStaff()) { %>
-          <a href="/admin/dashboard" class="navbar__link navbar__link--desktop-only">Admin</a>
+          <a href="/admin/dashboard" class="navbar__link">Admin</a>
         <% } else { %>
-          <a href="/account/dashboard" class="navbar__link navbar__link--desktop-only">My Account</a>
+          <a href="/account/dashboard" class="navbar__link">My Account</a>
         <% } %>
-        <form action="/logout" method="POST" class="navbar__link--desktop-only">
-          <button type="submit" class="btn btn--text">Log Out</button>
+        <form action="/logout" method="POST" style="display:contents">
+          <button type="submit" class="navbar__link btn btn--text">Log Out</button>
         </form>
       <% } else { %>
-        <a href="/login" class="navbar__link navbar__link--desktop-only">Log In</a>
+        <a href="/login" class="navbar__link">Log In</a>
       <% } %>
 
       <button type="button" class="navbar__toggle" id="navbarToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbarMenu">
