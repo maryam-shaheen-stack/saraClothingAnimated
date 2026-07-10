@@ -282,9 +282,49 @@
     padding: var(--space-5) var(--container-padding);
     gap: var(--space-4);
     display: none;
+    max-height: calc(100vh - 100%);
+    overflow-y: auto;
   }
   .navbar__menu.is-open {
     display: flex;
+  }
+  .navbar__menu-divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-border);
+    margin-block: var(--space-1);
+  }
+  .navbar__link--mobile-only {
+    display: block;
+  }
+  .navbar__link--desktop-only {
+    display: none;
+  }
+
+  /* The top row (logo + search/cart/hamburger) must never run out of
+     horizontal space — that's what was pushing the hamburger button
+     partly off-screen on narrow phones. Trim what's shown, not what's
+     available: full nav links + login/account already live in the
+     dropdown above, so nothing is lost, just relocated. */
+  .navbar__inner {
+    gap: var(--space-2);
+    padding-inline: var(--space-3);
+  }
+  .navbar__logo-text {
+    display: none;
+  }
+  .navbar__actions {
+    gap: var(--space-1);
+  }
+  .navbar__toggle {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .navbar__logo-img {
+    height: 40px;
+    width: 40px;
   }
 }
 
@@ -298,6 +338,13 @@
   }
   .navbar__toggle {
     display: none;
+  }
+  .navbar__menu-divider,
+  .navbar__link--mobile-only {
+    display: none;
+  }
+  .navbar__link--desktop-only {
+    display: inline-flex;
   }
 }
 

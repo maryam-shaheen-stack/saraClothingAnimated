@@ -12,6 +12,16 @@ const { dashboardPathFor } = require('../middleware/auth');
 
 // GET /login
 const showLoginPage = function (req, res) {
+  // Same mechanism requireAuth already uses (session.returnTo) — this just
+  // lets a plain link/redirect (e.g. "please log in to add to cart") set
+  // it too, via ?returnTo=/some/page. Only accepts a same-site relative
+  // path (must start with a single '/'), never a full URL, so this can't
+  // be used to redirect someone off-site after login.
+  const { returnTo } = req.query;
+  if (typeof returnTo === 'string' && returnTo.startsWith('/') && !returnTo.startsWith('//')) {
+    req.session.returnTo = returnTo;
+  }
+
   res.render('pages/login', {
     pageTitle: 'Log In',
     pageCss: 'login',

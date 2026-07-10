@@ -11,7 +11,6 @@
   if (!cartItemsEl) return;
 
   const subtotalEl = document.getElementById('cartSubtotal');
-  const checkoutBtn = document.getElementById('checkoutBtn');
 
   function formatRs(amount) {
     return 'Rs. ' + Number(amount).toLocaleString();
@@ -98,13 +97,5 @@
       });
     }
   });
-
-  // Checkout flow isn't built yet — this is an honest placeholder rather
-  // than a dead link, so it's obvious to replace once /checkout exists.
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', function () {
-      alert('Checkout is coming soon!');
-    });
-  }
 
 })();

@@ -92,6 +92,14 @@
         });
         const data = await res.json();
 
+        if (res.status === 401) {
+          window.SaraUI.showFeedback(cartFeedback, 'Please log in to add items to your cart. Redirecting…', 'error');
+          window.setTimeout(function () {
+            window.location.href = '/login?returnTo=' + encodeURIComponent(window.location.pathname);
+          }, 900);
+          return;
+        }
+
         if (!res.ok) throw new Error(data.message || 'Could not add this item to your cart.');
 
         window.SaraUI.showFeedback(cartFeedback, 'Added to your cart.', 'success');
