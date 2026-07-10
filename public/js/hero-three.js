@@ -36,8 +36,15 @@
     let height = hero.clientHeight;
     if (width === 0 || height === 0) return;
 
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    // antialias:false — the star shader already renders soft round glow
+    // dots (not hard edges), so MSAA adds negligible visual smoothing here
+    // while costing real GPU time every single frame. Turning it off is
+    // invisible for this effect and a major performance win.
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false });
+    // Cap render resolution at 1.5x instead of 2x — on high-DPI phones/
+    // laptops (DPR 2–3) this alone cuts pixel-shading work by roughly half,
+    // with no visible softness for a blurred/twinkling background effect.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(width, height, false);
 
     const scene = new THREE.Scene();
@@ -166,11 +173,35 @@
     }
     window.addEventListener('resize', handleResize, { passive: true });
 
+    // ---- Pause when scrolled out of view ----
+    // The hero is only ever visible near the top of the page; once the
+    // user scrolls past it (browsing products, footer, etc.) there is
+    // nothing to see here, so stop spending GPU time on invisible frames.
+    // Resumes instantly and exactly where it left off when scrolled back.
+    let isHeroVisible = true;
+    const heroVisibilityObserver = new IntersectionObserver(
+      (entries) => {
+        isHeroVisible = entries[0].isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    heroVisibilityObserver.observe(hero);
+
     // ---- Render loop ----
     const clock = new THREE.Clock();
     let currentBurst = 0;
 
     function animate() {
+      // Skip rendering entirely while the tab is hidden/backgrounded, or
+      // the hero has been scrolled out of view — the scene simply resumes
+      // from where it left off once visible again; nothing resets or
+      // looks different, this only stops burning GPU/CPU on frames nobody
+      // can see.
+      if (document.hidden || !isHeroVisible) {
+        requestAnimationFrame(animate);
+        return;
+      }
+
       requestAnimationFrame(animate);
 
       const t = clock.getElapsedTime();

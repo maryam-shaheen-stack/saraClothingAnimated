@@ -3,23 +3,18 @@
 <%- include('../partials/head') %>
 <body>
 
-  <!-- Sitewide ambient background: mall photo + live Unicorn Studio scene
-       (gold sparkle/light effect, project 6yT3p3QeHwxLfGG1oNtE) + roaming
-       glow circles. Sits behind every page's content. -->
+  <!-- Sitewide ambient background: mall photo + soft gold shine + roaming
+       glow circles. Pure CSS, GPU-cheap (transform-only animations) — sits
+       behind every page's content without slowing anything down. -->
   <div class="ambient-bg" aria-hidden="true">
     <div class="ambient-bg__photo"></div>
-    <div class="ambient-bg__unicorn" data-us-project="6yT3p3QeHwxLfGG1oNtE" data-us-scale="1" data-us-dpi="1.5" data-us-lazyload="false" data-us-production="true"></div>
+    <div class="ambient-bg__shine"></div>
     <div class="ambient-bg__wash"></div>
     <div class="ambient-bg__orb ambient-bg__orb--1"></div>
     <div class="ambient-bg__orb ambient-bg__orb--2"></div>
     <div class="ambient-bg__orb ambient-bg__orb--3"></div>
     <div class="ambient-bg__orb ambient-bg__orb--4"></div>
   </div>
-
-  <!-- Unicorn Studio runtime — powers the ambient-bg gold sparkle scene above.
-       Loads once, then UnicornStudio.init() picks up any [data-us-project]
-       element on the page (silently does nothing if the CDN is blocked). -->
-  <script type="text/javascript">!function(){var u=window.UnicornStudio;if(u&&u.init){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){u.init()})}else{u.init()}}else{window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.2.6/dist/unicornStudio.umd.js",i.onload=function(){if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){UnicornStudio.init()})}else{UnicornStudio.init()}},(document.head||document.body).appendChild(i)}}();</script>
 
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -33,6 +28,7 @@
   <%- include('../partials/footer') %>
 
   <!-- Global scripts -->
+  <script src="/js/perf-pause.js" defer></script>
   <script src="/js/animations.js" defer></script>
   <script src="/js/main.js" defer></script>
   <script src="/js/3d-effects.js" defer></script>

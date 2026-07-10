@@ -23,10 +23,10 @@
   opacity: 0;
   visibility: hidden;
   z-index: 1;
-  transform: perspective(1200px) rotateY(34deg) translateZ(-200px) scale(0.94);
-  transition: opacity 550ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 550ms cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 550ms ease;
+  transform: perspective(1200px) rotateY(24deg) translateZ(-140px) scale(0.96);
+  transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 420ms ease;
   transform-style: preserve-3d;
 }
 
@@ -39,8 +39,8 @@
 
 .hero__slide .hero__content {
   opacity: 0;
-  transform: translateY(20px) translateZ(30px);
-  transition: opacity 700ms cubic-bezier(0.25, 1, 0.5, 1) 200ms, transform 700ms cubic-bezier(0.25, 1, 0.5, 1) 200ms;
+  transform: translateY(16px) translateZ(30px);
+  transition: opacity 480ms cubic-bezier(0.22, 1, 0.36, 1) 90ms, transform 480ms cubic-bezier(0.22, 1, 0.36, 1) 90ms;
 }
 
 .hero__slide.is-active .hero__content {
@@ -67,6 +67,7 @@
 }
 
 .hero__image {
+  position: relative;
   perspective: 1000px;
   transform-style: preserve-3d;
 }
@@ -78,18 +79,50 @@
   width: 100%;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.22);
   transform: rotateY(-18deg) rotateX(-5deg) translateZ(-50px);
-  transition: transform 900ms cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
   backface-visibility: hidden;
 }
 
-/* Subtle "Ken Burns" 3D orbit rotation zoom while a slide is on screen */
+/* Glossy light sweep across the image the moment its slide becomes active —
+   fast, one-shot, very attention-grabbing without looping forever. */
+.hero__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 60%
+  );
+  transform: translateX(-140%);
+  opacity: 0;
+  border-radius: var(--radius-xl);
+}
+
+.hero__slide.is-active .hero__image::after {
+  animation: hero-image-shine 1100ms cubic-bezier(0.22, 1, 0.36, 1) 260ms 1;
+}
+
+@keyframes hero-image-shine {
+  0%   { transform: translateX(-140%); opacity: 0; }
+  15%  { opacity: 0.9; }
+  60%  { opacity: 0.5; }
+  100% { transform: translateX(140%); opacity: 0; }
+}
+
+/* Subtle "Ken Burns" 3D orbit + gentle float while a slide is on screen —
+   quicker and livelier than a plain zoom, still smooth/GPU-cheap. */
 @keyframes hero-3d-orbit {
-  from { transform: scale(1) rotateY(-8deg) rotateX(-3deg) translateZ(0); }
-  to { transform: scale(1.08) rotateY(6deg) rotateX(3deg) translateZ(30px); }
+  0%   { transform: scale(1) rotateY(-8deg) rotateX(-3deg) translateZ(0) translateY(0); }
+  50%  { transform: scale(1.055) rotateY(3deg) rotateX(2deg) translateZ(20px) translateY(-6px); }
+  100% { transform: scale(1.09) rotateY(6deg) rotateX(3deg) translateZ(30px) translateY(0); }
 }
 
 .hero__slide.is-active .hero__image img {
-  animation: hero-3d-orbit 7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: hero-3d-orbit 5.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .hero__controls {
@@ -147,7 +180,8 @@
 @media (prefers-reduced-motion: reduce) {
   .hero__slide,
   .hero__slide .hero__content,
-  .hero__slide.is-active .hero__image img {
+  .hero__slide.is-active .hero__image img,
+  .hero__image::after {
     transition: none;
     animation: none;
   }

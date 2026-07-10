@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
+const compression = require('compression');
 const expressLayouts = require('express-ejs-layouts');
 
 const connectDB = require('./config/db');
@@ -44,8 +45,20 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layouts/main');
 
+// ---- Performance: gzip/brotli-style compression for all responses ----
+// Pure transfer-size optimization — shrinks HTML/CSS/JS/JSON responses in
+// transit. Zero effect on markup, styling, or behavior; every page just
+// arrives faster over the network.
+app.use(compression());
+
 // ---- Static assets ----
-app.use(express.static(path.join(__dirname, 'public')));
+// Cache-busting isn't needed here since filenames don't change on deploy in
+// this setup; a moderate maxAge means repeat visits (any page → any other
+// page) reuse already-downloaded CSS/JS/images instead of refetching them.
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '7d',
+  etag: true,
+}));
 
 // ---- Body parsing ----
 app.use(express.json());

@@ -1,15 +1,12 @@
 /* ==========================================================================
    SARA CLOTHING — AMBIENT-BG.CSS
-   Sitewide ambient background: the luxury mall-interior photograph, plus a
-   handful of soft "roaming" blurred light-circles drifting slowly over it,
-   PLUS (new) a live Unicorn Studio WebGL scene (gold sparkle/light scene,
-   project 6yT3p3QeHwxLfGG1oNtE) layered between the photo and the legibility
-   wash — this is the animated background captured in the reference video.
+   Sitewide ambient background: the luxury mall-interior photograph, a soft
+   gold shine sweep, and a handful of blurred "roaming" light-circles.
    Sits behind ALL page content (navbar, hero, main, footer) on every page,
-   since it's injected once via layouts/main.ejs.
-   The photo + wash + orbs remain pure CSS (nothing to fail to load); the
-   Unicorn Studio layer enhances progressively on top and simply stays
-   invisible if its script/CDN is blocked or slow.
+   injected once via layouts/main.ejs.
+   Performance note: kept intentionally lightweight — pure CSS, transform/
+   background-position-only animations (no animated filters, no WebGL),
+   so it stays smooth even on low-power devices and never blocks page load.
    ========================================================================== */
 
 .ambient-bg {
@@ -18,41 +15,67 @@
   z-index: -1;          /* stays behind normal in-flow content, in front of body bg */
   overflow: hidden;
   pointer-events: none;  /* never blocks clicks/scroll/taps/forms */
+  isolation: isolate;     /* scopes mix-blend-mode/compositing to this layer only —
+                              same look, much cheaper for the browser to paint */
+  contain: layout style paint; /* tells the browser this subtree never affects
+                                   layout outside itself, so it can skip
+                                   recalculating the rest of the page */
 }
 
 /* Base photograph layer, softened with a light ivory wash so page text
    (which sits in normal-flow content on top) stays legible everywhere,
-   including over the busiest part of the image. */
+   including over the busiest part of the image. Slow "Ken Burns" drift
+   keeps it feeling alive without being distracting or costing much (pure
+   transform, GPU-composited). */
 .ambient-bg__photo {
   position: absolute;
-  inset: -2%;                       /* slight overscan so the slow pan below never reveals an edge */
+  inset: -6%;                       /* extra overscan so the pan below never reveals an edge */
   background-image: url('/images/backgrounds/mall-lobby.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  filter: saturate(1.08) brightness(0.97);   /* static — computed once, not animated (cheap) */
+  animation: ambientPhotoDrift 42s ease-in-out infinite;
+  will-change: transform;
 }
 
-/* Live Unicorn Studio scene (gold sparkle / light effect) — sits above the
-   photo but underneath the ivory wash, so it reads as a soft animated glow
-   over the mall photo rather than a distracting foreground layer. Forced to
-   fill the viewport regardless of the fixed 1440x900 size baked into the
-   embed's inline style. */
-.ambient-bg__unicorn {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  overflow: hidden;
-  opacity: 0.7;
-  mix-blend-mode: screen; /* lets gold sparkle/light show without darkening page text below */
+@keyframes ambientPhotoDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1.04); }
+  50%  { transform: translate3d(-1.2%, 1%, 0) scale(1.08); }
+  100% { transform: translate3d(0, 0, 0) scale(1.04); }
 }
-.ambient-bg__unicorn canvas {
-  width: 100% !important;
-  height: 100% !important;
+
+/* Soft gold sheen sweeping slowly across the whole background — cheap,
+   pure-CSS "sparkle/shine" pass. Kept to a modest size (not oversized/
+   over-blurred) and animated via background-position only, no filter. */
+.ambient-bg__shine {
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 232, 186, 0.16) 46%,
+    rgba(255, 244, 214, 0.24) 50%,
+    rgba(255, 232, 186, 0.16) 54%,
+    transparent 65%
+  );
+  background-size: 220% 220%;
+  mix-blend-mode: soft-light;
+  animation: ambientShineSweep 11s ease-in-out infinite;
+  will-change: background-position;
+}
+
+@keyframes ambientShineSweep {
+  0%   { background-position: 15% 0%; }
+  50%  { background-position: 85% 100%; }
+  100% { background-position: 15% 0%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ambient-bg__unicorn { display: none; }
+  .ambient-bg__photo,
+  .ambient-bg__shine {
+    animation: none !important;
+  }
 }
 
 .ambient-bg__wash {
@@ -139,8 +162,14 @@
   }
 }
 
-/* Smaller screens: fewer/smaller orbs so nothing feels cluttered or costs
-   unnecessary paint on low-power devices. */
+/* Pause decorative motion while the browser tab is hidden/inactive — pure
+   CPU/battery saving, zero visual difference whenever the tab is actually
+   being looked at (see /js/perf-pause.js). */
+body.is-tab-hidden .ambient-bg__photo,
+body.is-tab-hidden .ambient-bg__shine,
+body.is-tab-hidden .ambient-bg__orb {
+  animation-play-state: paused !important;
+}
 @media (max-width: 700px) {
   .ambient-bg__orb--2,
   .ambient-bg__orb--4 {
